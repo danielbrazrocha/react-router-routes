@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import HomePage from "./Pages/HomePage";
+import LoginPage from "./Pages/LoginPage";
+import LandingPage from "./Pages/LandingPage";
+import DashboardPage from "./Pages/DashboardPage";
+import PublicRoute from "./Routes/PublicRoute";
+import PrivateRoute from "./Routes/PrivateRoute";
+import AdminRoute from "./Routes/AdminRoute";
+import { BrowserRouter, Switch } from "react-router-dom";
+import { LoginProvider } from "./Contexts/LoginContext";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <LoginProvider>
+      <BrowserRouter>
+        <Switch>
+          <PublicRoute restricted={false} exact path="/" component={HomePage} />
+          <PublicRoute restricted={true} exact path="/login" component={LoginPage} />
+          <PrivateRoute exact path="/landing" component={LandingPage} />
+          <AdminRoute path="/dashboard" component={DashboardPage} />
+          {/* children alternative works too */}
+          {/* <AdminRoute path="/dashboard" children={<DashboardPage />} />   */}
+        </Switch>
+      </BrowserRouter>
+    </LoginProvider>
   );
-}
+};
 
 export default App;
